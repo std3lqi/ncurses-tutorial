@@ -8,6 +8,28 @@
 #include "win-manager.h"
 
 int main(int argc, char *argv[]) {
+    initscr();      // Enter curses mode
+    cbreak();       // Disable line buffering
+    noecho();       // Disable echoing
+    keypad(stdscr, TRUE);   // Enable function keys like F1
+    curs_set(0);            // Hide cursor
+
+    addch('N');
+    addch('S' | A_STANDOUT);
+    addch('U' | A_UNDERLINE);
+    addch('R' | A_REVERSE);
+    addch('K' | A_BLINK);
+    addch('D' | A_DIM);
+    addch('B' | A_BOLD);
+    addch('P' | A_PROTECT);
+    addch('H' | A_INVIS);
+    addch('A' | A_ALTCHARSET);
+    addch('I' | A_ITALIC);
+
+    refresh();
+    getch();
+
+    endwin();       // Exit from curses mode
     return 0;
 }
 
