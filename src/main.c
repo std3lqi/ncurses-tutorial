@@ -8,6 +8,12 @@
 #include "win-manager.h"
 
 int main(int argc, char *argv[]) {
+
+    if (argc < 2) {
+        printf("Usage: ./main <dir>\n");
+        exit(1);
+    }
+
     initscr();      // Enter curses mode
     cbreak();       // Disable line buffering
     noecho();       // Disable echoing
@@ -27,6 +33,13 @@ int main(int argc, char *argv[]) {
     // addch('A' | A_ALTCHARSET);
     // addch('I' | A_ITALIC);
 
+    char *dir = argv[1];
+    // Remove the trailing /
+    int len = strlen(dir);
+    if (dir[len - 1] == '/') {
+        dir[len - 1] = '\0';
+    }
+
     int h, w;
     getmaxyx(stdscr, h, w);
     int h_files = h - 1 - 6;
@@ -36,10 +49,12 @@ int main(int argc, char *argv[]) {
     create_contents_window(h_files, w - w_files, 1, w_files);
     create_debug_window(6, w, 1 + h_files, 0);
 
-    debug_line("This is a debug message");
-    debug_line("Hello %s", "ncurses");
+    list_dir_in_file_list_window(dir);
 
-    getch();
+    int ch;
+    while ((ch = getch()) != 'q') {
+
+    }
 
     delete_menu_bar_window();
     delete_file_list_window();
