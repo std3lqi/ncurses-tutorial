@@ -36,6 +36,9 @@ int main(int argc, char *argv[]) {
     create_contents_window(h_files, w - w_files, 1, w_files);
     create_debug_window(6, w, 1 + h_files, 0);
 
+    debug_line("This is a debug message");
+    debug_line("Hello %s", "ncurses");
+
     getch();
 
     delete_menu_bar_window();
