@@ -1,13 +1,25 @@
 #include <curses.h>
 #include "debug-win.h"
+#include "win-manager.h"
 
 static WINDOW *win = NULL;
 static int count = 0;
 
 void create_debug_window(int h, int w, int y, int x) {
     win = newwin(h, w, y, x);
+    register_window(win);
+    refresh_debug_window();
+}
+
+void refresh_debug_window() {
     wborder(win, '|', '|', '-', '-', '+', '+', '+', '+');
+    if (is_current_window(win)) {
+        wattron(win, A_REVERSE);
+    }    
     mvwaddstr(win, 0, 1, "Debug");
+    if (is_current_window(win)) {
+        wattroff(win, A_REVERSE);
+    }
     wrefresh(win);
 }
 

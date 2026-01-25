@@ -1,13 +1,18 @@
 #include <curses.h>
 #include <dirent.h>
+#include <limits.h>
 #include "file-win.h"
+#include "win-manager.h"
 
 static WINDOW *win = NULL;
 static int entry_count = 0;
 static struct dirent **entry_list = NULL;
+static char current_path[PATH_MAX];
 
 void create_file_list_window(int h, int w, int y, int x) {
     win = newwin(h, w, y, x);
+    register_window(win);
+    current_path[0] = '\0';
     wborder(win, 0, 0, 0, 0, 0, 0, 0, 0);
     mvwaddstr(win, 0, 1, "File List");
     wrefresh(win);
@@ -24,7 +29,11 @@ void delete_file_list_window() {
 void list_dir_in_file_list_window(const char *dir) {
     free(entry_list);
     entry_count = scandir(dir, &entry_list, NULL, NULL);
+    strcpy(current_path, dir);
+    refresh_file_list_window();
+}
 
+void refresh_file_list_window() {
     int h = getmaxy(win);
     int w = getmaxx(win);
 
@@ -32,11 +41,17 @@ void list_dir_in_file_list_window(const char *dir) {
     wborder(win, 0, 0, 0, 0, 0, 0, 0, 0);
 
     // Print title
-    if (strlen(dir) > w - 2) {
-        mvwaddnstr(win, 0, 1, dir, w - 2 - 3);
+    if (is_current_window(win)) {
+        wattron(win, A_REVERSE);
+    }
+    if (strlen(current_path) > w - 2) {
+        mvwaddnstr(win, 0, 1, current_path, w - 2 - 3);
         waddstr(win, "...");
     } else {
-        mvwaddstr(win, 0, 1, dir);
+        mvwaddstr(win, 0, 1, current_path);
+    }
+    if (is_current_window(win)) {
+        wattroff(win, A_REVERSE);
     }
 
     // Print entries

@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
     getmaxyx(stdscr, h, w);
     int h_files = h - 1 - 6;
     int w_files = w * 0.3;
+    init_win_manager();
     create_menu_bar_window(1, w, 0, 0);
     create_file_list_window(h_files, w_files, 1, 0);
     create_contents_window(h_files, w - w_files, 1, w_files);
@@ -53,7 +54,15 @@ int main(int argc, char *argv[]) {
 
     int ch;
     while ((ch = getch()) != 'q') {
-
+        switch (ch) {
+            case '\t':
+                next_window();
+                refresh_menu_bar_window();
+                refresh_file_list_window();
+                refresh_debug_window();
+                refresh_contents_window();
+                break;
+        }
     }
 
     delete_menu_bar_window();
