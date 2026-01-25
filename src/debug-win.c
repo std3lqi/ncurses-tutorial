@@ -1,6 +1,7 @@
 #include <curses.h>
 #include "debug-win.h"
 #include "win-manager.h"
+#include "constants.h"
 
 static WINDOW *win = NULL;
 static int count = 0;
@@ -12,6 +13,7 @@ void create_debug_window(int h, int w, int y, int x) {
 }
 
 void refresh_debug_window() {
+    wbkgd(win, COLOR_PAIR(COLOR_OF_DEBUG_WIN));
     wborder(win, '|', '|', '-', '-', '+', '+', '+', '+');
     if (is_current_window(win)) {
         wattron(win, A_REVERSE);

@@ -6,6 +6,7 @@
 #include "file-win.h"
 #include "menubar-win.h"
 #include "win-manager.h"
+#include "constants.h"
 
 int main(int argc, char *argv[]) {
 
@@ -20,6 +21,12 @@ int main(int argc, char *argv[]) {
     keypad(stdscr, TRUE);   // Enable function keys like F1
     curs_set(0);            // Hide cursor
     refresh();
+
+    if (has_colors()) {
+        start_color();
+        init_pair(COLOR_OF_DIR, COLOR_YELLOW, COLOR_BLACK);
+        init_pair(COLOR_OF_DEBUG_WIN, COLOR_WHITE, COLOR_BLUE);
+    }
 
     // addch('N');
     // addch('S' | A_STANDOUT);
@@ -61,6 +68,9 @@ int main(int argc, char *argv[]) {
                 refresh_file_list_window();
                 refresh_debug_window();
                 refresh_contents_window();
+                break;
+            default:
+                handle_key_in_current_window(ch);
                 break;
         }
     }
