@@ -32,6 +32,7 @@ void delete_file_list_window() {
 
 void list_dir_in_file_list_window(const char *dir) {
     free(entry_list);
+    entry_list = NULL;
     entry_count = scandir(dir, &entry_list, NULL, NULL);
     index_of_selected = 0;
     strcpy(current_path, dir);

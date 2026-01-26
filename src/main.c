@@ -1,5 +1,6 @@
 #include <curses.h>
 #include <panel.h>
+#include <limits.h>
 #include "help-win.h"
 #include "contents-win.h"
 #include "debug-win.h"
@@ -62,6 +63,16 @@ int main(int argc, char *argv[]) {
     int ch;
     while ((ch = getch()) != 'q') {
         switch (ch) {
+            case 'h': {
+                char dir[PATH_MAX];
+                show_help_window(dir, PATH_MAX - 1);
+                if (strlen(dir) > 0) {
+                    list_dir_in_file_list_window(dir);
+                }
+                refresh_file_list_window();
+                refresh_contents_window();
+                break;
+            }
             case '\t':
                 next_window();
                 refresh_menu_bar_window();
