@@ -8,7 +8,7 @@ static int count = 0;
 
 void create_debug_window(int h, int w, int y, int x) {
     win = newwin(h, w, y, x);
-    register_window(win);
+    register_window(win, refresh_debug_window);
     refresh_debug_window();
 }
 

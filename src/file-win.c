@@ -12,10 +12,12 @@ static char current_path[PATH_MAX];
 static int index_of_selected = -1;
 
 static void handle_key(int ch);
+static void handle_mouse(MEVENT *event);
 
 void create_file_list_window(int h, int w, int y, int x) {
     win = newwin(h, w, y, x);
-    register_window_with_key_handle(win, handle_key);
+    register_window_with_key_handle(win, refresh_file_list_window, 
+        handle_key, handle_mouse);
     current_path[0] = '\0';
     wborder(win, 0, 0, 0, 0, 0, 0, 0, 0);
     mvwaddstr(win, 0, 1, "File List");
@@ -110,6 +112,24 @@ void enter_dir(struct dirent *entry) {
         sprintf(new_dir, "%s/%s", current_path, entry->d_name);
     }
     list_dir_in_file_list_window(new_dir);
+}
+
+static void handle_mouse(MEVENT *event) {
+    int y = event->y;
+    int x = event->x;
+    wmouse_trafo(win, &y, &x, FALSE);
+    if ((event->bstate & BUTTON1_CLICKED) ||
+        (event->bstate & BUTTON1_DOUBLE_CLICKED)) {
+        index_of_selected = y - 1;
+    }
+    if (event->bstate & BUTTON1_DOUBLE_CLICKED) {
+        if (index_of_selected >= 0 && index_of_selected < entry_count) {
+            struct dirent *entry = entry_list[index_of_selected];
+            if (entry->d_type == DT_DIR) {
+                enter_dir(entry);
+            }
+        }
+    }
 }
 
 static void handle_key(int ch) {

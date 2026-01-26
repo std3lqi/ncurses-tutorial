@@ -6,7 +6,7 @@ static WINDOW *win = NULL;
 
 void create_contents_window(int h, int w, int y, int x) {
     win = newwin(h, w, y, x);
-    register_window(win);
+    register_window(win, refresh_contents_window);
     refresh_contents_window();
 }
 

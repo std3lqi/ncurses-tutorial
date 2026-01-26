@@ -18,7 +18,7 @@ void refresh_menu_bar_window() {
 
 void create_menu_bar_window(int h, int w, int y, int x) {
     win = newwin(h, w, y, x);
-    register_window(win);
+    register_window(win, refresh_menu_bar_window);
     refresh_menu_bar_window();
 }
 

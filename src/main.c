@@ -29,6 +29,8 @@ int main(int argc, char *argv[]) {
         init_pair(COLOR_OF_DEBUG_WIN, COLOR_WHITE, COLOR_BLUE);
     }
 
+    mousemask(ALL_MOUSE_EVENTS, NULL);
+
     // addch('N');
     // addch('S' | A_STANDOUT);
     // addch('U' | A_UNDERLINE);
