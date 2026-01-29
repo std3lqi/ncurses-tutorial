@@ -65,6 +65,10 @@ int main(int argc, char *argv[]) {
     int ch;
     while ((ch = getch()) != 'q') {
         switch (ch) {
+            case 'd': {
+                debug_line("This is a debug message");
+                break;
+            }
             case 'h': {
                 char dir[PATH_MAX];
                 show_help_window(dir, PATH_MAX - 1);
