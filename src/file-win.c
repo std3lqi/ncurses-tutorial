@@ -4,6 +4,7 @@
 #include "file-win.h"
 #include "win-manager.h"
 #include "constants.h"
+#include "contents-win.h"
 
 static WINDOW *win = NULL;
 static int entry_count = 0;
@@ -114,6 +115,12 @@ void enter_dir(struct dirent *entry) {
     list_dir_in_file_list_window(new_dir);
 }
 
+void show_text_file(struct dirent *entry) {
+    char file_path[PATH_MAX];
+    sprintf(file_path, "%s/%s", current_path, entry->d_name);
+    show_text_file_in_contents_window(file_path);
+}
+
 static void handle_mouse(MEVENT *event) {
     int y = event->y;
     int x = event->x;
@@ -151,6 +158,8 @@ static void handle_key(int ch) {
                 struct dirent *entry = entry_list[index_of_selected];
                 if (entry->d_type == DT_DIR) {
                     enter_dir(entry);
+                } else if (entry->d_type == DT_REG) {
+                    show_text_file(entry);
                 }
             }
             break;
