@@ -11,6 +11,7 @@ static int entry_count = 0;
 static struct dirent **entry_list = NULL;
 static char current_path[PATH_MAX];
 static int index_of_selected = -1;
+static int index_of_first_line = -1;
 
 static void handle_key(int ch);
 static void handle_mouse(MEVENT *event);
@@ -38,6 +39,7 @@ void list_dir_in_file_list_window(const char *dir) {
     entry_list = NULL;
     entry_count = scandir(dir, &entry_list, NULL, NULL);
     index_of_selected = 0;
+    index_of_first_line = 0;
     strcpy(current_path, dir);
     refresh_file_list_window();
 }
@@ -71,7 +73,7 @@ void refresh_file_list_window() {
         mvwaddstr(win, y, 1, "Nothing");
     } else {
         for (int row = 0; row < h - 2; row++) {
-            int i = row;
+            int i = row + index_of_first_line;
             if (i >= entry_count) {
                 break;
             }
@@ -144,12 +146,19 @@ static void handle_key(int ch) {
         case KEY_DOWN:
             if (index_of_selected < entry_count - 1) {
                 index_of_selected++;
+                int lines = getmaxy(win) - 2;
+                while (index_of_selected - index_of_first_line >= lines) {
+                    index_of_first_line++;
+                }
                 refresh_file_list_window();
             }
             break;
         case KEY_UP:
             if (index_of_selected > 0) {
                 index_of_selected--;
+                while (index_of_selected - index_of_first_line < 0) {
+                    index_of_first_line--;
+                }
                 refresh_file_list_window();
             }
             break;
