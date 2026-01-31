@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
         start_color();
         init_pair(COLOR_OF_DIR, COLOR_YELLOW, COLOR_BLACK);
         init_pair(COLOR_OF_DEBUG_WIN, COLOR_WHITE, COLOR_BLUE);
+        init_pair(COLOR_OF_MENU_FORE, COLOR_GREEN, COLOR_BLACK);
     }
 
     mousemask(ALL_MOUSE_EVENTS, NULL);
@@ -77,6 +78,15 @@ int main(int argc, char *argv[]) {
                 }
                 update_panels();
                 doupdate();
+                break;
+            }
+            case 'm': {
+                int command = show_menu();
+                if (command == COMMAND_HELP) {
+                    ungetch('h');
+                } else if (command == COMMAND_EXIT) {
+                    ungetch('q');
+                }
                 break;
             }
             case '\t':

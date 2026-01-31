@@ -6,7 +6,7 @@ INCLUDES=
 CFLAGS=-g
 
 all: ${FILES}
-	gcc -o main ${CFLAGS} ${INCLUDES} ${FILES} -lpanel -lncurses
+	gcc -o main ${CFLAGS} ${INCLUDES} ${FILES} -lpanel -lmenu -lncurses
 
 clean:
 	rm -f ${FILES} main
