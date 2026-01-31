@@ -1,4 +1,5 @@
 #include <curses.h>
+#include <panel.h>
 #include <dirent.h>
 #include <limits.h>
 #include "file-win.h"
@@ -7,6 +8,7 @@
 #include "contents-win.h"
 
 static WINDOW *win = NULL;
+static PANEL *panel = NULL;
 static int entry_count = 0;
 static struct dirent **entry_list = NULL;
 static char current_path[PATH_MAX];
@@ -18,6 +20,7 @@ static void handle_mouse(MEVENT *event);
 
 void create_file_list_window(int h, int w, int y, int x) {
     win = newwin(h, w, y, x);
+    panel = new_panel(win);
     register_window_with_key_handle(win, refresh_file_list_window, 
         handle_key, handle_mouse);
     current_path[0] = '\0';
@@ -27,6 +30,8 @@ void create_file_list_window(int h, int w, int y, int x) {
 }
 
 void delete_file_list_window() {
+    del_panel(panel);
+    panel = NULL;
     delwin(win);
     win = NULL;
     free(entry_list);
@@ -100,6 +105,9 @@ void refresh_file_list_window() {
     mvwprintw(win, y, 1, "%d", entry_count);
 
     wrefresh(win);
+
+    update_panels();
+    doupdate();
 }
 
 void enter_dir(struct dirent *entry) {

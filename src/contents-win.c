@@ -1,9 +1,11 @@
 #include <curses.h>
+#include <panel.h>
 #include "contents-win.h"
 #include "win-manager.h"
 #include "debug-win.h"
 
 static WINDOW *win = NULL;
+static PANEL *panel = NULL;
 static WINDOW *pad = NULL;
 static int index_of_first_line = 0;
 static int index_of_first_column = 0;
@@ -12,6 +14,7 @@ static void key_handle(int ch);
 
 void create_contents_window(int h, int w, int y, int x) {
     win = newwin(h, w, y, x);
+    panel = new_panel(win);
     register_window_with_key_handle(win, refresh_contents_window, 
         key_handle, NULL);
     refresh_contents_window();
@@ -41,9 +44,14 @@ void refresh_contents_window() {
             x_win + 1 + w_contents - 1
         );
     }
+
+    update_panels();
+    doupdate();
 }
 
 void delete_contents_window() {
+    del_panel(panel);
+    panel = NULL;
     delwin(win);
     win = NULL;
     delwin(pad);

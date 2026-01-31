@@ -75,8 +75,8 @@ int main(int argc, char *argv[]) {
                 if (strlen(dir) > 0) {
                     list_dir_in_file_list_window(dir);
                 }
-                refresh_file_list_window();
-                refresh_contents_window();
+                update_panels();
+                doupdate();
                 break;
             }
             case '\t':

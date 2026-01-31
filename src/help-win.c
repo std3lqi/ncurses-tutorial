@@ -6,6 +6,7 @@ void show_help_window(char *dir, int len) {
     int h = 20;
     int w = 60;
     WINDOW *win = newwin(h, w, (LINES - h) / 2, (COLS - w) / 2);
+    PANEL *panel = new_panel(win);
     box(win, 0, 0);
     mvwaddstr(win, 0, 1, "Help");
 
@@ -33,5 +34,9 @@ void show_help_window(char *dir, int len) {
 
     wrefresh(win);
 
+    update_panels();
+    doupdate();
+
+    del_panel(panel);
     delwin(win);
 }
