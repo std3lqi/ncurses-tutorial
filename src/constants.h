@@ -5,8 +5,16 @@
 #define COLOR_OF_DEBUG_WIN  2
 #define COLOR_OF_MENU_FORE  3
 
-#define COMMAND_NONE    0
-#define COMMAND_HELP    1
-#define COMMAND_EXIT    2
+#define COMMAND_NONE    0x00
+#define COMMAND_HELP    0x01
+#define COMMAND_EXIT    0x02
+
+#define COMMAND_SHOW_FILE   0x10
+#define COMMAND_SHOW_DIR    0x20
+#define COMMAND_SHOW_LINK   0x40
+#define COMMAND_SHOW_MASK   0x70
+#define COMMAND_SHOW_ALL    0x70
+// FILE and LINK
+// 0x10 | 0x40 = 0x50
 
 #endif

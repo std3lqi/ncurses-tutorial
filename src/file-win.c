@@ -14,6 +14,7 @@ static struct dirent **entry_list = NULL;
 static char current_path[PATH_MAX];
 static int index_of_selected = -1;
 static int index_of_first_line = -1;
+int entry_types_to_show = COMMAND_SHOW_ALL;
 
 static void handle_key(int ch);
 static void handle_mouse(MEVENT *event);
@@ -39,13 +40,31 @@ void delete_file_list_window() {
     entry_count = 0;
 }
 
+int select_entry(const struct dirent *entry) {
+    if (entry->d_type == DT_DIR && 
+        (entry_types_to_show & COMMAND_SHOW_DIR) == 0) {
+        return FALSE;
+    }
+    if (entry->d_type == DT_REG && 
+        (entry_types_to_show & COMMAND_SHOW_FILE) == 0) {
+        return FALSE;
+    }
+    if (entry->d_type == DT_LNK && 
+        (entry_types_to_show & COMMAND_SHOW_LINK) == 0) {
+        return FALSE;
+    }
+    return TRUE;
+}
+
 void list_dir_in_file_list_window(const char *dir) {
     free(entry_list);
     entry_list = NULL;
-    entry_count = scandir(dir, &entry_list, NULL, NULL);
+    if (dir) {
+        strcpy(current_path, dir);
+    }
+    entry_count = scandir(current_path, &entry_list, select_entry, NULL);
     index_of_selected = 0;
     index_of_first_line = 0;
-    strcpy(current_path, dir);
     refresh_file_list_window();
 }
 

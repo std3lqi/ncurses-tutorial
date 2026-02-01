@@ -9,6 +9,8 @@
 #include "win-manager.h"
 #include "constants.h"
 
+extern int entry_types_to_show;
+
 int main(int argc, char *argv[]) {
 
     if (argc < 2) {
@@ -86,6 +88,9 @@ int main(int argc, char *argv[]) {
                     ungetch('h');
                 } else if (command == COMMAND_EXIT) {
                     ungetch('q');
+                } else if ((command & COMMAND_SHOW_MASK) != 0) {
+                    entry_types_to_show = command;
+                    list_dir_in_file_list_window(NULL);
                 }
                 break;
             }
