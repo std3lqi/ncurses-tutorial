@@ -8,6 +8,7 @@
 #include "menubar-win.h"
 #include "win-manager.h"
 #include "constants.h"
+#include "filter-form.h"
 
 extern int entry_types_to_show;
 
@@ -70,6 +71,10 @@ int main(int argc, char *argv[]) {
         switch (ch) {
             case 'd': {
                 debug_line("This is a debug message");
+                break;
+            }
+            case 'f': {
+                show_filter_form();
                 break;
             }
             case 'h': {
