@@ -15,6 +15,8 @@ static char current_path[PATH_MAX];
 static int index_of_selected = -1;
 static int index_of_first_line = -1;
 int entry_types_to_show = COMMAND_SHOW_ALL;
+char *filter_text = NULL;
+bool is_whole_text = FALSE;
 
 static void handle_key(int ch);
 static void handle_mouse(MEVENT *event);
@@ -38,6 +40,8 @@ void delete_file_list_window() {
     free(entry_list);
     entry_list = NULL;
     entry_count = 0;
+    free(filter_text);
+    filter_text = NULL;
 }
 
 int select_entry(const struct dirent *entry) {
@@ -52,6 +56,17 @@ int select_entry(const struct dirent *entry) {
     if (entry->d_type == DT_LNK && 
         (entry_types_to_show & COMMAND_SHOW_LINK) == 0) {
         return FALSE;
+    }
+    if (filter_text && strlen(filter_text) > 0) {
+        if (is_whole_text) {
+            if (strcmp(entry->d_name, filter_text) != 0) {
+                return FALSE;
+            }
+        } else {
+            if (strstr(entry->d_name, filter_text) == 0) {
+                return FALSE;
+            }
+        }
     }
     return TRUE;
 }

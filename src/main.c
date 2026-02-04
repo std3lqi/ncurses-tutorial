@@ -75,6 +75,7 @@ int main(int argc, char *argv[]) {
             }
             case 'f': {
                 show_filter_form();
+                list_dir_in_file_list_window(NULL);
                 break;
             }
             case 'h': {
