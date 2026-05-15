@@ -1,5 +1,7 @@
 #include <curses.h>
 #include <dirent.h>
+#include <stdlib.h>
+#include <string.h>
 #include "file-win.h"
 
 static WINDOW *win = NULL;

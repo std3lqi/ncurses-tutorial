@@ -1,5 +1,7 @@
 #include <curses.h>
 #include <panel.h>
+#include <stdlib.h>
+#include <string.h>
 #include "help-win.h"
 #include "contents-win.h"
 #include "debug-win.h"
