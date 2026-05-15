@@ -1,5 +1,6 @@
 #include <curses.h>
 #include <panel.h>
+#include <string.h>
 #include "help-win.h"
 
 void show_help_window(char *dir, int len) {
