@@ -1,6 +1,7 @@
 #include <curses.h>
 #include <menu.h>
 #include <panel.h>
+#include <string.h>
 #include "menubar-win.h"
 #include "win-manager.h"
 #include "constants.h"

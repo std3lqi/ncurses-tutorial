@@ -1,5 +1,6 @@
 #include <form.h>
 #include <panel.h>
+#include <string.h>
 #include "filter-form.h"
 #include "debug-win.h"
 
